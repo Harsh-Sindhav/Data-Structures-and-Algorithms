@@ -21,7 +21,7 @@ class TrieNode{
 public class Trie {
 
    private TrieNode root;
-//   private int numWords;
+   private int numWords;
     
    public Trie(){
 	   root = new TrieNode('\0'); //Null character Java The default value of a char primitive type is '\u0000' (null character) as stated in the Java Language Specification. The shortcut for 'u0000' is '\0', So the null can be represented either by 'u0000' or '\0'.
@@ -121,9 +121,26 @@ private void add(TrieNode root,String word) {
     	
     	 }
 
-//      public int countWords() {
-//    	return root.childCount;  
-//      }  
+     public int countWords() {
+         return countWords(root); // this root is the root of Trie
+     }
+
+     private int countWords(TrieNode root) {
+         // variable localized because it is a recursive call
+         // also because we add to this variable in the loop
+         int numWords = 0;
+
+         // if condition simplified
+         if (root.isTerminating)
+        	 numWords++;
+
+         for (int i = 0; i < 26; i++) {
+             if (root.children[i] != null)
+                 // you need to save the result of the recursive call
+            	 numWords += countWords(root.children[i]);
+         }
+         return numWords;
+     }
 
   
      // pattern matching
